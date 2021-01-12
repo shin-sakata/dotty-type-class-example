@@ -1,7 +1,8 @@
 package TypeClass
 
 trait Monad[M[_]] extends Applicative[M] {
-  def flatMap[A, B](f: A => M[B])(fa: M[A]): M[B]
+  def join[A](mma: M[M[A]]): M[A]
+  def flatMap[A, B](f: A => M[B])(fa: M[A]): M[B] = join(map(f)(fa))
 }
 
 object Monad {
@@ -12,4 +13,8 @@ object Monad {
 extension [A, B, M[_]](fa: M[A])(using monad: Monad[M]) {
   def flatMap(f: A => M[B]): M[B] = monad.flatMap(f)(fa)
   def >>=(f: A => M[B]): M[B] = monad.flatMap(f)(fa)
+}
+
+extension[A, M[_]](mma: M[M[A]])(using monad: Monad[M]) {
+  def join(): M[A] = monad.join(mma)
 }
