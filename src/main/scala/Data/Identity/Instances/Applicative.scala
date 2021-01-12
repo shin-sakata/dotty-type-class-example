@@ -3,7 +3,7 @@ package Data.Identity.Instances
 import TypeClass.{Applicative, Functor}
 import Data.Identity._
 
-given (using functor: Functor[Identity]) as Applicative[Identity] {
+given (using functor: Functor[Identity]): Applicative[Identity] with
   export functor._
 
   def pure[A](a: A): Identity[A] = Identity(a)
@@ -11,4 +11,3 @@ given (using functor: Functor[Identity]) as Applicative[Identity] {
     ff match {
       case Identity(f) => functor.map(f)(fa)
     }
-}

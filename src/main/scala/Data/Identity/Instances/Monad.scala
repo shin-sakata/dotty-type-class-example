@@ -3,7 +3,7 @@ package Data.Identity.Instances
 import TypeClass.{Applicative, Monad}
 import Data.Identity._
 
-given (using applicative: Applicative[Identity]) as Monad[Identity] {
+given (using applicative: Applicative[Identity]): Monad[Identity] with
   export applicative._
 
   def join[A](mma: Identity[Identity[A]]): Identity[A] = {
@@ -11,4 +11,3 @@ given (using applicative: Applicative[Identity]) as Monad[Identity] {
       case Identity(ma) => ma
     }
   }
-}
